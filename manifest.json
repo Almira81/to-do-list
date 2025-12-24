@@ -1,7 +1,7 @@
 {
   "name": "A To-Do List",
   "short_name": "To-Do",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffeef4",
   "theme_color": "#ffeef4",
@@ -13,3 +13,4 @@
     }
   ]
 }
+
