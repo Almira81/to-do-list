@@ -1,0 +1,82 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #eaf6ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(123, 188, 255, 0.25);
+  padding: 30px;
+  width: 320px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date h1,
+.date h2,
+.date h3 {
+  margin: 0;
+  color: #7bbcff;
+}
+
+.progress {
+  text-align: right;
+  color: #7bbcff;
+}
+
+form {
+  display: flex;
+  margin-top: 20px;
+}
+
+input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  background: #f2f8ff;
+  outline: none;
+}
+
+button {
+  margin-left: 10px;
+  border: none;
+  background: #6aaeff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #5aa3f0;
+}
+
+.taskList {
+  margin-top: 20px;
+}
+
+.task {
+  background: #f2f8ff;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.task.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
