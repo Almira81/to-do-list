@@ -1,25 +1,22 @@
-// 🌗 THEME TOGGLE
+// 🌗 THEME
 const themeToggle = document.getElementById("themeToggle");
-
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "dark") {
+if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
   themeToggle.textContent = "☀️";
 }
 
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  const isDark = document.body.classList.contains("dark");
-  themeToggle.textContent = isDark ? "☀️" : "🌙";
-  localStorage.setItem("theme", isDark ? "dark" : "light");
+  const dark = document.body.classList.contains("dark");
+  themeToggle.textContent = dark ? "☀️" : "🌙";
+  localStorage.setItem("theme", dark ? "dark" : "light");
 });
 
-// 🧠 TASK STORAGE
+// 🧠 STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+const todayList = document.getElementById("todayList");
+const olderList = document.getElementById("olderList");
+const progressText = document.getElementById("progressText");
 
 // 🗓️ DATE
 const today = new Date();
@@ -29,34 +26,35 @@ document.getElementById("dayNumber").textContent = today.getDate();
 document.getElementById("monthName").textContent =
   today.toLocaleDateString("en-US", { month: "long" });
 
-// 📋 ELEMENTS
-const addBtn = document.getElementById("addBtn");
-const newTask = document.getElementById("newTask");
-const taskList = document.getElementById("taskList");
-const progressText = document.getElementById("progressText");
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 // ➕ ADD TASK
-addBtn.addEventListener("click", (e) => {
+document.getElementById("addBtn").addEventListener("click", (e) => {
   e.preventDefault();
-  const text = newTask.value.trim();
+  const text = document.getElementById("newTask").value.trim();
   if (!text) return;
 
   tasks.push({
     id: Date.now(),
     text,
     completed: false,
-    createdAt: new Date().toISOString(),
+    date: new Date().toDateString(),
   });
 
-  newTask.value = "";
+  document.getElementById("newTask").value = "";
   saveTasks();
   renderTasks();
 });
 
-// 🎨 RENDER TASKS
+// 🎨 RENDER
 function renderTasks() {
-  taskList.innerHTML = "";
+  todayList.innerHTML = "";
+  olderList.innerHTML = "";
+
   let done = 0;
+  const todayStr = new Date().toDateString();
 
   tasks.forEach((task) => {
     const taskEl = document.createElement("div");
@@ -68,7 +66,7 @@ function renderTasks() {
 
     taskEl.innerHTML = `
       <span>${task.text}</span>
-      <button class="deleteBtn">✕</button>
+      <button>✕</button>
     `;
 
     taskEl.addEventListener("click", () => {
@@ -77,25 +75,21 @@ function renderTasks() {
       renderTasks();
     });
 
-    taskEl.querySelector(".deleteBtn").addEventListener("click", (e) => {
+    taskEl.querySelector("button").addEventListener("click", (e) => {
       e.stopPropagation();
       tasks = tasks.filter((t) => t.id !== task.id);
       saveTasks();
       renderTasks();
     });
 
-    taskList.appendChild(taskEl);
+    if (task.date === todayStr) {
+      todayList.appendChild(taskEl);
+    } else {
+      olderList.appendChild(taskEl);
+    }
   });
 
   progressText.textContent = `${done} / ${tasks.length} tasks done`;
 }
 
-// 🔄 INIT
 renderTasks();
-
-// 📱 SERVICE WORKER
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("service-worker.js")
-    .catch(() => {});
-}
