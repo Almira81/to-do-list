@@ -3,7 +3,7 @@
   "short_name": "To-Do",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#eaf4ff",
+  "background_color": "#f3f8ff",
   "theme_color": "#cfe6ff",
   "icons": [
     {
@@ -13,5 +13,6 @@
     }
   ]
 }
+
 
 
