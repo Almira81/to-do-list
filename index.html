@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A To-Do List</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" href="icons/icon-192.png" />
 
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <meta name="theme-color" content="#f3f8ff" />
 </head>
+
 <body>
   <div class="container">
     <div class="header">
@@ -17,15 +19,18 @@
         <h1 id="dayNumber"></h1>
         <h3 id="monthName"></h3>
       </div>
+
       <div class="progress">
         <p>Progress:</p>
         <p id="progressText">0 / 0 tasks done</p>
       </div>
+
+      <button id="themeToggle" aria-label="Toggle theme">🌙</button>
     </div>
 
     <form id="taskForm">
       <input type="text" id="newTask" placeholder="Input your task" />
-      <button id="addBtn">Add Task</button>
+      <button id="addBtn">Add</button>
     </form>
 
     <div class="taskList" id="taskList"></div>
@@ -34,10 +39,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-<!--
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
--->
