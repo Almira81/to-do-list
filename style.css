@@ -1,6 +1,6 @@
 body {
   font-family: "Poppins", sans-serif;
-  background-color: #eaf6ff;
+  background-color: #f3f8ff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,3 +80,4 @@ button:hover {
   text-decoration: line-through;
   opacity: 0.6;
 }
+
