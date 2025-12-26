@@ -25,7 +25,7 @@
         <p id="progressText">0 / 0 tasks done</p>
       </div>
 
-      <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+      <button id="themeToggle">🌙</button>
     </div>
 
     <form id="taskForm">
@@ -33,7 +33,13 @@
       <button id="addBtn">Add</button>
     </form>
 
-    <div class="taskList" id="taskList"></div>
+    <!-- TODAY -->
+    <h4 class="sectionTitle">Today</h4>
+    <div class="taskList" id="todayList"></div>
+
+    <!-- OLDER -->
+    <h4 class="sectionTitle">Older</h4>
+    <div class="taskList" id="olderList"></div>
   </div>
 
   <script src="script.js"></script>
