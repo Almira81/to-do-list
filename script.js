@@ -1,27 +1,41 @@
-// SHRANJEVANJE TASKOV
+// 🌗 THEME TOGGLE
+const themeToggle = document.getElementById("themeToggle");
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
+  document.body.classList.add("dark");
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+// 🧠 TASK STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-//DATUM
+// 🗓️ DATE
 const today = new Date();
-const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
-const dayNumber = today.getDate();
-const monthName = today.toLocaleDateString("en-US", { month: "long" });
+document.getElementById("dayName").textContent =
+  today.toLocaleDateString("en-US", { weekday: "long" });
+document.getElementById("dayNumber").textContent = today.getDate();
+document.getElementById("monthName").textContent =
+  today.toLocaleDateString("en-US", { month: "long" });
 
-document.getElementById("dayName").textContent = dayName;
-document.getElementById("dayNumber").textContent = dayNumber;
-document.getElementById("monthName").textContent = monthName;
-
-// ELEMENTI
+// 📋 ELEMENTS
 const addBtn = document.getElementById("addBtn");
 const newTask = document.getElementById("newTask");
 const taskList = document.getElementById("taskList");
 const progressText = document.getElementById("progressText");
 
-// DODAJ TASK
+// ➕ ADD TASK
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
   const text = newTask.value.trim();
@@ -39,10 +53,9 @@ addBtn.addEventListener("click", (e) => {
   renderTasks();
 });
 
-// 🎨 IZRIS TASKOV
+// 🎨 RENDER TASKS
 function renderTasks() {
   taskList.innerHTML = "";
-
   let done = 0;
 
   tasks.forEach((task) => {
@@ -58,14 +71,12 @@ function renderTasks() {
       <button class="deleteBtn">✕</button>
     `;
 
-    // toggle completed
     taskEl.addEventListener("click", () => {
       task.completed = !task.completed;
       saveTasks();
       renderTasks();
     });
 
-    // delete
     taskEl.querySelector(".deleteBtn").addEventListener("click", (e) => {
       e.stopPropagation();
       tasks = tasks.filter((t) => t.id !== task.id);
@@ -79,13 +90,12 @@ function renderTasks() {
   progressText.textContent = `${done} / ${tasks.length} tasks done`;
 }
 
-// NALOŽI OB ZAGONU
+// 🔄 INIT
 renderTasks();
 
-//  SERVICE WORKER
+// 📱 SERVICE WORKER
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("service-worker.js")
-    .then(() => console.log("Service Worker registered"))
-    .catch((err) => console.log("SW registration failed", err));
+    .catch(() => {});
 }
