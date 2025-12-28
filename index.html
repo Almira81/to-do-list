@@ -21,8 +21,8 @@
       </div>
 
       <div class="progress">
-        <p>Progress:</p>
-        <p id="progressText">0 / 0 tasks done</p>
+        <p>Progress</p>
+        <p id="progressText">0 / 0</p>
       </div>
 
       <button id="themeToggle">🌙</button>
@@ -30,28 +30,25 @@
 
     <form id="taskForm">
       <input type="text" id="newTask" placeholder="Input your task" />
-      <button id="addBtn">Add</button>  
+      <button id="addBtn">Add</button>
     </form>
-    
-<p id="motivationText" class="motivation"></p>
-<p id="statsText" class="stats"></p>
-<p id="streakText" class="streak"></p>
-  
-    <!-- TODAY -->
+
+    <p id="motivationText" class="motivation"></p>
+    <p id="statsText" class="stats"></p>
+    <p id="streakText" class="streak"></p>
+
     <h4 class="sectionTitle">Today</h4>
     <div class="taskList" id="todayList"></div>
 
-    <!-- OLDER -->
     <h4 class="sectionTitle">Older</h4>
     <div class="taskList" id="olderList"></div>
+
+    <!-- ARCHIVE BUTTON – ZDAJ PRAVILNO -->
+    <button id="archiveBtn" class="archiveBtn">
+      Archive completed
+    </button>
   </div>
-<button id="archiveBtn" class="archiveBtn">
-  Archive completed
-</button>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
