@@ -16,13 +16,13 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", dark ? "dark" : "light");
 });
 
-// 🧠 STORAGE
+// STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 const todayList = document.getElementById("todayList");
 const olderList = document.getElementById("olderList");
 const progressText = document.getElementById("progressText");
 
-// 🗓️ DATE
+// DATE
 const today = new Date();
 document.getElementById("dayName").textContent =
   today.toLocaleDateString("en-US", { weekday: "long" });
@@ -34,7 +34,7 @@ function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// ➕ ADD TASK
+// ADD TASK
 document.getElementById("addBtn").addEventListener("click", (e) => {
   e.preventDefault();
   const text = document.getElementById("newTask").value.trim();
@@ -52,7 +52,7 @@ document.getElementById("addBtn").addEventListener("click", (e) => {
   renderTasks();
 });
 
-// 🎨 RENDER
+// RENDER
 function renderTasks() {
   todayList.innerHTML = "";
   olderList.innerHTML = "";
@@ -106,7 +106,20 @@ function updateMotivation() {
   } else {
     motivation.textContent = "";
   }
+  function updateStats() {
+  const stats = document.getElementById("statsText");
+
+  const total = tasks.length;
+  const done = tasks.filter((t) => t.completed).length;
+
+  if (total === 0) {
+    stats.textContent = "";
+  } else {
+    stats.textContent = `✅ ${done} completed • 📝 ${total} total`;
+  }
 }
+
 renderTasks();
 updateMotivation();
+updateStats();
 
