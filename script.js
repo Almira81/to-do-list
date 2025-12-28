@@ -96,5 +96,17 @@ function renderTasks() {
   progressText.textContent = `${done} / ${tasks.length} tasks done`;
 }
 
+function updateMotivation() {
+  const motivation = document.getElementById("motivationText");
+
+  if (tasks.length === 0) {
+    motivation.textContent = "Add your first task and start your day!";
+  } else if (tasks.every((t) => t.completed)) {
+    motivation.textContent = "All tasks done — good job! ";
+  } else {
+    motivation.textContent = "";
+  }
+}
 renderTasks();
+updateMotivation();
 
