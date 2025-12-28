@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const olderList = document.getElementById("olderList");
   const progressText = document.getElementById("progressText");
   const motivationText = document.getElementById("motivationText");
-  const statsText = document.getElementById("statsText");
   const streakText = document.getElementById("streakText");
   const archiveBtn = document.getElementById("archiveBtn");
 
@@ -74,8 +73,36 @@ document.addEventListener("DOMContentLoaded", () => {
         el.classList.add("completed");
         done++;
       }
+el.innerHTML = `
+  <span class="taskText">${task.text}</span>
+  <button>✕</button>
+`;
+      const textEl = el.querySelector(".taskText");
 
-      el.innerHTML = `<span>${task.text}</span><button>✕</button>`;
+textEl.addEventListener("dblclick", (e) => {
+  e.stopPropagation();
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = task.text;
+  input.className = "editInput";
+
+  textEl.replaceWith(input);
+  input.focus();
+
+  const saveEdit = () => {
+    if (input.value.trim()) {
+      task.text = input.value.trim();
+      saveTasks();
+    }
+    render();
+  };
+
+  input.addEventListener("blur", saveEdit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveEdit();
+  });
+});
 
       el.addEventListener("click", () => {
         task.completed = !task.completed;
@@ -96,7 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     progressText.textContent = `${done} / ${tasks.length}`;
     updateMotivation();
-    updateStats();
     renderStreak();
   }
 
@@ -108,12 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       motivationText.textContent = "";
     }
-  }
-
-  function updateStats() {
-    const done = tasks.filter(t => t.completed).length;
-    statsText.textContent =
-      tasks.length ? `✅ ${done} • 📝 ${tasks.length}` : "";
   }
 
   function updateStreak() {
@@ -144,3 +164,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
+
