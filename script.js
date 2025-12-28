@@ -1,4 +1,8 @@
-// 🌗 THEME
+function todayISO() {
+  return new Date().toISOString().split("T")[0];
+}
+
+// THEME
 const themeToggle = document.getElementById("themeToggle");
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
@@ -40,7 +44,7 @@ document.getElementById("addBtn").addEventListener("click", (e) => {
     id: Date.now(),
     text,
     completed: false,
-    date: new Date().toDateString(),
+    date: todayISO(),
   });
 
   document.getElementById("newTask").value = "";
@@ -54,7 +58,7 @@ function renderTasks() {
   olderList.innerHTML = "";
 
   let done = 0;
-  const todayStr = new Date().toDateString();
+  const todayStr = todayISO();
 
   tasks.forEach((task) => {
     const taskEl = document.createElement("div");
@@ -93,3 +97,4 @@ function renderTasks() {
 }
 
 renderTasks();
+
