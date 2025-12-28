@@ -153,11 +153,17 @@ function updateMotivation() {
     stats.textContent = `✅ ${done} completed • 📝 ${total} total`;
   }
 }
+  document.getElementById("archiveBtn").addEventListener("click", () => {
+  tasks = tasks.filter((t) => !t.completed);
+  saveTasks();
+  renderTasks();
+});
 
 renderTasks();
 updateMotivation();
 updateStats();
 updateStreak();
 renderStreak();
+
 
 
