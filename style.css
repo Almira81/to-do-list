@@ -118,5 +118,13 @@ button {
 .task.dragging {
   opacity: 0.4;
 }
+.motivation {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 14px;
+  color: var(--primary);
+  opacity: 0.85;
+}
+
 
 
