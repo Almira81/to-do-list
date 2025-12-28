@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   });
 
-  // RENDER
   function render() {
     todayList.innerHTML = "";
     olderList.innerHTML = "";
@@ -70,3 +69,72 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.createElement("div");
       el.className = "task";
       if (task.completed) {
+        el.classList.add("completed");
+        done++;
+      }
+
+      el.innerHTML = `
+        <span>${task.text}</span>
+        <button>✕</button>
+      `;
+
+      el.addEventListener("click", () => {
+        task.completed = !task.completed;
+        saveTasks();
+        updateStreak();
+        render();
+      });
+
+      el.querySelector("button").addEventListener("click", (e) => {
+        e.stopPropagation();
+        tasks = tasks.filter(t => t.id !== task.id);
+        saveTasks();
+        render();
+      });
+
+      (task.date === todayStr ? todayList : olderList).appendChild(el);
+    });
+
+    progressText.textContent = `${done} / ${tasks.length}`;
+    updateMotivation();
+    renderStreak();
+  }
+
+  function updateMotivation() {
+    if (tasks.length === 0) {
+      motivationText.textContent = "Add your first task ✨";
+    } else if (tasks.every(t => t.completed)) {
+      motivationText.textContent = "All tasks done 🎉";
+    } else {
+      motivationText.textContent = "";
+    }
+  }
+
+  function updateStreak() {
+    const today = todayISO();
+    if (!tasks.some(t => t.completed && t.date === today)) return;
+    if (lastCompletedDate === today) return;
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yISO = yesterday.toISOString().split("T")[0];
+
+    streak = lastCompletedDate === yISO ? streak + 1 : 1;
+    lastCompletedDate = today;
+
+    localStorage.setItem("streak", streak);
+    localStorage.setItem("lastCompletedDate", today);
+  }
+
+  function renderStreak() {
+    streakText.textContent = streak ? `🔥 ${streak} day streak` : "";
+  }
+
+  archiveBtn.addEventListener("click", () => {
+    tasks = tasks.filter(t => !t.completed);
+    saveTasks();
+    render();
+  });
+
+  render();
+});
