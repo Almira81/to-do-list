@@ -1,3 +1,3 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("SCRIPT LOADED");
+  console.log("SCRIPT OK");
 });
