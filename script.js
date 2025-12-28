@@ -103,13 +103,14 @@ textEl.addEventListener("dblclick", (e) => {
     if (e.key === "Enter") saveEdit();
   });
 });
-
-      el.addEventListener("click", () => {
-        task.completed = !task.completed;
-        saveTasks();
-        updateStreak();
-        render();
-      });
+// TOGGLE COMPLETED (single click)
+textEl.addEventListener("click", (e) => {
+  e.stopPropagation();
+  task.completed = !task.completed;
+  saveTasks();
+  updateStreak();
+  render();
+});
 
       el.querySelector("button").addEventListener("click", (e) => {
         e.stopPropagation();
@@ -130,7 +131,7 @@ textEl.addEventListener("dblclick", (e) => {
     if (tasks.length === 0) {
       motivationText.textContent = "Add your first task ✨";
     } else if (tasks.every(t => t.completed)) {
-      motivationText.textContent = "All tasks done 🎉";
+      motivationText.textContent = "All tasks done!";
     } else {
       motivationText.textContent = "";
     }
@@ -164,4 +165,5 @@ textEl.addEventListener("dblclick", (e) => {
 
   render();
 });
+
 
