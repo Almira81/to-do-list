@@ -1,9 +1,15 @@
+// =====================
+// HELPERS
+// =====================
 function todayISO() {
   return new Date().toISOString().split("T")[0];
 }
 
+// =====================
 // THEME
+// =====================
 const themeToggle = document.getElementById("themeToggle");
+
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
   themeToggle.textContent = "☀️";
@@ -16,13 +22,27 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", dark ? "dark" : "light");
 });
 
+// =====================
 // STORAGE
+// =====================
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// =====================
+// ELEMENTS
+// =====================
 const todayList = document.getElementById("todayList");
 const olderList = document.getElementById("olderList");
 const progressText = document.getElementById("progressText");
+const motivationText = document.getElementById("motivationText");
+const statsText = document.getElementById("statsText");
+const streakText = document.getElementById("streakText");
 
-// DATE
+// =====================
+// DATE HEADER
+// =====================
 const today = new Date();
 document.getElementById("dayName").textContent =
   today.toLocaleDateString("en-US", { weekday: "long" });
@@ -30,14 +50,13 @@ document.getElementById("dayNumber").textContent = today.getDate();
 document.getElementById("monthName").textContent =
   today.toLocaleDateString("en-US", { month: "long" });
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
+// =====================
 // ADD TASK
+// =====================
 document.getElementById("addBtn").addEventListener("click", (e) => {
   e.preventDefault();
-  const text = document.getElementById("newTask").value.trim();
+  const input = document.getElementById("newTask");
+  const text = input.value.trim();
   if (!text) return;
 
   tasks.push({
@@ -47,50 +66,79 @@ document.getElementById("addBtn").addEventListener("click", (e) => {
     date: todayISO(),
   });
 
-  document.getElementById("newTask").value = "";
+  input.value = "";
   saveTasks();
   renderTasks();
 });
+
+// =====================
+// MOTIVATION
+// =====================
+function updateMotivation() {
+  if (tasks.length === 0) {
+    motivationText.textContent = "✨ Add your first task and start your day ✨";
+  } else if (tasks.every((t) => t.completed)) {
+    motivationText.textContent = "🎉 All tasks done — great job! 🎉";
+  } else {
+    motivationText.textContent = "";
+  }
+}
+
+// =====================
+// STATS
+// =====================
+function updateStats() {
+  const total = tasks.length;
+  const done = tasks.filter((t) => t.completed).length;
+
+  statsText.textContent =
+    total === 0 ? "" : `✅ ${done} completed • 📝 ${total} total`;
+}
+
+// =====================
+// STREAK
+// =====================
 let streak = Number(localStorage.getItem("streak")) || 0;
 let lastCompletedDate = localStorage.getItem("lastCompletedDate");
 
-function todayISO() {
-  return new Date().toISOString().split("T")[0];
-}
 function updateStreak() {
   const today = todayISO();
   const completedToday = tasks.some(
     (t) => t.completed && t.date === today
   );
 
-  if (!completedToday) return;
+  if (!completedToday || lastCompletedDate === today) return;
 
-  if (lastCompletedDate === today) return;
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yISO = yesterday.toISOString().split("T")[0];
 
-  if (!lastCompletedDate) {
-    streak = 1;
-  } else {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yISO = yesterday.toISOString().split("T")[0];
-
-    streak = lastCompletedDate === yISO ? streak + 1 : 1;
-  }
-
+  streak = lastCompletedDate === yISO ? streak + 1 : 1;
   lastCompletedDate = today;
+
   localStorage.setItem("streak", streak);
   localStorage.setItem("lastCompletedDate", today);
 }
 
-// RENDER
+function renderStreak() {
+  streakText.textContent = streak > 0 ? `🔥 ${streak} day streak` : "";
+}
+
+// =====================
+// ARCHIVE COMPLETED
+// =====================
+document.getElementById("archiveBtn").addEventListener("click", () => {
+  tasks = tasks.filter((t) => !t.completed);
+  saveTasks();
+  renderTasks();
+});
+
+// =====================
+// RENDER TASKS
+// =====================
 function renderTasks() {
   todayList.innerHTML = "";
   olderList.innerHTML = "";
-  
-function renderStreak() {
-  const el = document.getElementById("streakText");
-  el.textContent = streak > 0 ? `🔥 ${streak} day streak` : "";
-}
 
   let done = 0;
   const todayStr = todayISO();
@@ -121,49 +169,20 @@ function renderStreak() {
       renderTasks();
     });
 
-    if (task.date === todayStr) {
-      todayList.appendChild(taskEl);
-    } else {
-      olderList.appendChild(taskEl);
-    }
+    task.date === todayStr
+      ? todayList.appendChild(taskEl)
+      : olderList.appendChild(taskEl);
   });
 
   progressText.textContent = `${done} / ${tasks.length} tasks done`;
+
+  updateMotivation();
+  updateStats();
+  updateStreak();
+  renderStreak();
 }
 
-function updateMotivation() {
-  const motivation = document.getElementById("motivationText");
-
-  if (tasks.length === 0) {
-    motivation.textContent = "Add your first task and start your day!";
-  } else if (tasks.every((t) => t.completed)) {
-    motivation.textContent = "All tasks done — good job! ";
-  } else {
-    motivation.textContent = "";
-  }
-  function updateStats() {
-  const stats = document.getElementById("statsText");
-
-  const total = tasks.length;
-  const done = tasks.filter((t) => t.completed).length;
-
-  if (total === 0) {
-    stats.textContent = "";
-  } else {
-    stats.textContent = `✅ ${done} completed • 📝 ${total} total`;
-  }
-}
-  document.getElementById("archiveBtn").addEventListener("click", () => {
-  tasks = tasks.filter((t) => !t.completed);
-  saveTasks();
-  renderTasks();
-});
-
+// =====================
+// INIT
+// =====================
 renderTasks();
-updateMotivation();
-updateStats();
-updateStreak();
-renderStreak();
-
-
-
