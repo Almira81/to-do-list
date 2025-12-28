@@ -51,11 +51,46 @@ document.getElementById("addBtn").addEventListener("click", (e) => {
   saveTasks();
   renderTasks();
 });
+let streak = Number(localStorage.getItem("streak")) || 0;
+let lastCompletedDate = localStorage.getItem("lastCompletedDate");
+
+function todayISO() {
+  return new Date().toISOString().split("T")[0];
+}
+function updateStreak() {
+  const today = todayISO();
+  const completedToday = tasks.some(
+    (t) => t.completed && t.date === today
+  );
+
+  if (!completedToday) return;
+
+  if (lastCompletedDate === today) return;
+
+  if (!lastCompletedDate) {
+    streak = 1;
+  } else {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yISO = yesterday.toISOString().split("T")[0];
+
+    streak = lastCompletedDate === yISO ? streak + 1 : 1;
+  }
+
+  lastCompletedDate = today;
+  localStorage.setItem("streak", streak);
+  localStorage.setItem("lastCompletedDate", today);
+}
 
 // RENDER
 function renderTasks() {
   todayList.innerHTML = "";
   olderList.innerHTML = "";
+  
+function renderStreak() {
+  const el = document.getElementById("streakText");
+  el.textContent = streak > 0 ? `🔥 ${streak} day streak` : "";
+}
 
   let done = 0;
   const todayStr = todayISO();
@@ -122,4 +157,7 @@ function updateMotivation() {
 renderTasks();
 updateMotivation();
 updateStats();
+updateStreak();
+renderStreak();
+
 
