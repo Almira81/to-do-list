@@ -208,9 +208,7 @@ el.querySelector(".editBtn").addEventListener("click", (e) => {
       if (list === todayList) {
         task.date = todayISO();
       } else {
-        const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-task.date = yesterday.toISOString().split("T")[0];       
+        task.date = "older";
       }
 
       saveTasks();
