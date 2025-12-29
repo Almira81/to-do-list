@@ -126,17 +126,36 @@ document.addEventListener("DOMContentLoaded", () => {
         render();
       });
 
-      /* EDIT */
-      el.querySelector(".editBtn").addEventListener("click", (e) => {
-        e.stopPropagation();
+     /* EDIT – INLINE */
+el.querySelector(".editBtn").addEventListener("click", (e) => {
+  e.stopPropagation();
 
-        const newText = prompt("Edit task:", task.text);
-        if (newText && newText.trim()) {
-          task.text = newText.trim();
-          saveTasks();
-          render();
-        }
-      });
+  const textEl = el.querySelector(".taskText");
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = task.text;
+  input.className = "editInput";
+
+  textEl.replaceWith(input);
+  input.focus();
+
+  const saveEdit = () => {
+    const value = input.value.trim();
+    if (value) {
+      task.text = value;
+      saveTasks();
+    }
+    render();
+  };
+
+  input.addEventListener("blur", saveEdit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveEdit();
+    if (e.key === "Escape") render();
+  });
+});
+
 
       /* DELETE */
       el.querySelector(".deleteBtn").addEventListener("click", (e) => {
@@ -163,3 +182,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
+
