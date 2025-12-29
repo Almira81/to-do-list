@@ -1,3 +1,4 @@
+let draggedTaskId = null;
 document.addEventListener("DOMContentLoaded", () => {
   /* ---------- HELPERS ---------- */
   const todayISO = () => new Date().toISOString().split("T")[0];
@@ -109,6 +110,19 @@ document.addEventListener("DOMContentLoaded", () => {
         el.classList.add("completed");
         done++;
       }
+el.draggable = true;
+
+/* DRAG START */
+el.addEventListener("dragstart", () => {
+  draggedTaskId = task.id;
+  el.classList.add("dragging");
+});
+
+/* DRAG END */
+el.addEventListener("dragend", () => {
+  el.classList.remove("dragging");
+  draggedTaskId = null;
+});
 
       el.innerHTML = `
         <span class="taskText">${task.text}</span>
@@ -179,7 +193,30 @@ el.querySelector(".editBtn").addEventListener("click", (e) => {
     saveTasks();
     render();
   });
+  /* ---------- DRAG & DROP ZONES ---------- */
+  [todayList, olderList].forEach((list) => {
+    list.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    list.addEventListener("drop", () => {
+      if (!draggedTaskId) return;
+
+      const task = tasks.find((t) => t.id === draggedTaskId);
+      if (!task) return;
+
+      if (list === todayList) {
+        task.date = todayISO();
+      } else {
+        task.date = "older";
+      }
+
+      saveTasks();
+      render();
+    });
+  });
 
   render();
 });
 
+  
