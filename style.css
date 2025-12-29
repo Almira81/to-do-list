@@ -26,6 +26,7 @@ body {
   height: 100vh;
 }
 
+/* CONTAINER */
 .container {
   background: var(--bg-card);
   border-radius: 20px;
@@ -62,19 +63,23 @@ body {
   cursor: pointer;
   width: 32px;
   height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* FORM */
 form {
   display: flex;
+  gap: 12px; /* 👈 več prostora med input & add */
   margin-top: 20px;
 }
 
 input {
   flex: 1;
   border: none;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 12px;
   background: var(--bg-soft);
   color: var(--text-main);
 }
@@ -83,71 +88,72 @@ button {
   border: none;
   background: var(--primary-strong);
   color: white;
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 10px 16px;
+  border-radius: 12px;
   cursor: pointer;
 }
 
 /* SECTIONS */
 .sectionTitle {
-  margin: 15px 0 5px;
+  margin: 18px 0 8px;
   font-size: 14px;
   color: var(--primary);
 }
 
 /* TASK LIST */
 .taskList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 10px;
 }
 
-/* TASK CARD */
+/* TASK */
 .task {
   background: var(--bg-soft);
-  border-radius: 12px;
-  padding: 10px 12px;
-
-  display: grid;
-  grid-template-columns: 1fr 32px 32px; /* 🔑 FIXED BUTTON WIDTHS */
-  align-items: center;
-  gap: 8px;
-
-  min-height: 44px; /* 🔑 ENOTNA VIŠINA */
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 /* TEXT */
 .taskText {
+  flex: 1;
   font-size: 14px;
   line-height: 1.4;
   word-break: break-word;
 }
 
-/* BUTTONS INSIDE TASK */
-.task button {
-  margin: 0;
-  padding: 0;
+/* ACTIONS (edit + delete) */
+.taskActions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ICON BUTTONS */
+.taskActions button {
+  background: var(--primary-strong);
+  padding: 6px;
+  border-radius: 8px;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* COMPLETED */
 .task.completed {
   text-decoration: line-through;
   opacity: 0.6;
 }
 
-/* DRAG VISUAL */
 .task.dragging {
   opacity: 0.4;
 }
 
-/* TEXT BLOCKS */
+/* MOTIVATION */
 .motivation {
   text-align: center;
   margin: 15px 0;
@@ -156,13 +162,7 @@ button {
   opacity: 0.85;
 }
 
-.stats {
-  text-align: center;
-  font-size: 12px;
-  opacity: 0.6;
-  margin-bottom: 10px;
-}
-
+/* STREAK */
 .streak {
   text-align: center;
   font-size: 13px;
@@ -173,10 +173,11 @@ button {
 /* ARCHIVE */
 .archiveBtn {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 12px;
   background: transparent;
   color: var(--primary);
   border: 1px dashed var(--primary);
-  padding: 8px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
 }
