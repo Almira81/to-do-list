@@ -181,3 +181,14 @@ button {
   border-radius: 12px;
   cursor: pointer;
 }
+.editInput {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: var(--bg-soft);
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+
