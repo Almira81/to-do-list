@@ -1,12 +1,7 @@
+let draggedTaskId = null;
 document.addEventListener("DOMContentLoaded", () => {
   /* ---------- HELPERS ---------- */
   const todayISO = () => new Date().toISOString().split("T")[0];
-
-  const yesterdayISO = () => {
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-    return d.toISOString().split("T")[0];
-  };
 
   /* ---------- ELEMENTS ---------- */
   const themeToggle = document.getElementById("themeToggle");
@@ -74,8 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!completedToday || lastCompletedDate === today) return;
 
-    const yesterday = yesterdayISO();
-    streak = lastCompletedDate === yesterday ? streak + 1 : 1;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yISO = yesterday.toISOString().split("T")[0];
+
+    streak = lastCompletedDate === yISO ? streak + 1 : 1;
     lastCompletedDate = today;
 
     localStorage.setItem("streak", streak);
@@ -112,21 +110,29 @@ document.addEventListener("DOMContentLoaded", () => {
         el.classList.add("completed");
         done++;
       }
+el.draggable = true;
 
-      const isToday = task.date === todayStr;
+/* DRAG START */
+el.addEventListener("dragstart", () => {
+  draggedTaskId = task.id;
+  el.classList.add("dragging");
+});
+
+/* DRAG END */
+el.addEventListener("dragend", () => {
+  el.classList.remove("dragging");
+  draggedTaskId = null;
+});
 
       el.innerHTML = `
         <span class="taskText">${task.text}</span>
-        <div class="taskActions">
-          <button class="moveBtn">
-            ${isToday ? "Later" : "Today"}
-          </button>
+        <div>
           <button class="editBtn">✎</button>
           <button class="deleteBtn">✕</button>
         </div>
       `;
 
-      /* TOGGLE COMPLETE */
+      /* toggle completed */
       el.querySelector(".taskText").addEventListener("click", () => {
         task.completed = !task.completed;
         saveTasks();
@@ -134,42 +140,36 @@ document.addEventListener("DOMContentLoaded", () => {
         render();
       });
 
-      /* MOVE TODAY / LATER */
-      el.querySelector(".moveBtn").addEventListener("click", (e) => {
-        e.stopPropagation();
-        task.date = isToday ? yesterdayISO() : todayISO();
-        saveTasks();
-        render();
-      });
+     /* EDIT – INLINE */
+el.querySelector(".editBtn").addEventListener("click", (e) => {
+  e.stopPropagation();
 
-      /* EDIT – INLINE */
-      el.querySelector(".editBtn").addEventListener("click", (e) => {
-        e.stopPropagation();
+  const textEl = el.querySelector(".taskText");
 
-        const textEl = el.querySelector(".taskText");
-        const editInput = document.createElement("input");
-        editInput.type = "text";
-        editInput.value = task.text;
-        editInput.className = "editInput";
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = task.text;
+  input.className = "editInput";
 
-        textEl.replaceWith(editInput);
-        editInput.focus();
+  textEl.replaceWith(input);
+  input.focus();
 
-        const saveEdit = () => {
-          const value = editInput.value.trim();
-          if (value) {
-            task.text = value;
-            saveTasks();
-          }
-          render();
-        };
+  const saveEdit = () => {
+    const value = input.value.trim();
+    if (value) {
+      task.text = value;
+      saveTasks();
+    }
+    render();
+  };
 
-        editInput.addEventListener("blur", saveEdit);
-        editInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") saveEdit();
-          if (e.key === "Escape") render();
-        });
-      });
+  input.addEventListener("blur", saveEdit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveEdit();
+    if (e.key === "Escape") render();
+  });
+});
+
 
       /* DELETE */
       el.querySelector(".deleteBtn").addEventListener("click", (e) => {
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
         render();
       });
 
-      (isToday ? todayList : olderList).appendChild(el);
+      (task.date === todayStr ? todayList : olderList).appendChild(el);
     });
 
     progressText.textContent = `${done} / ${tasks.length}`;
@@ -193,6 +193,32 @@ document.addEventListener("DOMContentLoaded", () => {
     saveTasks();
     render();
   });
+  /* ---------- DRAG & DROP ZONES ---------- */
+  [todayList, olderList].forEach((list) => {
+    list.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    list.addEventListener("drop", () => {
+      if (!draggedTaskId) return;
+
+      const task = tasks.find((t) => t.id === draggedTaskId);
+      if (!task) return;
+
+      if (list === todayList) {
+        task.date = todayISO();
+      } else {
+        const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+task.date = yesterday.toISOString().split("T")[0];       
+      }
+
+      saveTasks();
+      render();
+    });
+  });
 
   render();
 });
+
+  
