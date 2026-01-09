@@ -117,15 +117,65 @@ button {
   margin-bottom: 10px;
 }
 
-/* TEXT */
+/* TASK TEXT */
 .taskText {
   flex: 1;
   font-size: 14px;
   line-height: 1.4;
   word-break: break-word;
+  cursor: pointer;
 }
 
-/* ACTIONS (edit + delete) */
+/* ✅ COMPLETED TASK (PRAVILNO PREČRTANO) */
+.task.completed .taskText {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ACTION BUTTONS */
 .taskActions {
   display: flex;
-  flex-direc
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ICON BUTTONS */
+.taskActions button {
+  background: var(--primary-strong);
+  padding: 6px;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MOTIVATION */
+.motivation {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 14px;
+  color: var(--primary);
+  opacity: 0.85;
+}
+
+/* STREAK */
+.streak {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: var(--primary-strong);
+}
+
+/* ARCHIVE BUTTON */
+.archiveBtn {
+  width: 100%;
+  margin-top: 12px;
+  background: transparent;
+  color: var(--primary);
+  border: 1px dashed var(--primary);
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+}
