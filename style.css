@@ -26,7 +26,7 @@ body {
   height: 100vh;
 }
 
-/* CONTAINER */
+/ CONTAINER/
 .container {
   background: var(--bg-card);
   border-radius: 20px;
@@ -35,7 +35,7 @@ body {
   width: 320px;
 }
 
-/* HEADER */
+/HEADER /
 .header {
   display: flex;
   justify-content: space-between;
@@ -68,10 +68,10 @@ body {
   justify-content: center;
 }
 
-/* FORM */
+/FORM/
 form {
   display: flex;
-  gap: 12px; /* 👈 več prostora med input & add */
+  gap: 12px;
   margin-top: 20px;
 }
 
@@ -93,19 +93,19 @@ button {
   cursor: pointer;
 }
 
-/* SECTIONS */
+/SECTIONS/
 .sectionTitle {
   margin: 18px 0 8px;
   font-size: 14px;
   color: var(--primary);
 }
 
-/* TASK LIST */
+/TASK LIST/
 .taskList {
   margin-bottom: 10px;
 }
 
-/* TASK */
+/TASK/
 .task {
   background: var(--bg-soft);
   border-radius: 14px;
@@ -117,7 +117,7 @@ button {
   margin-bottom: 10px;
 }
 
-/* TEXT */
+/TEXT/
 .taskText {
   flex: 1;
   font-size: 14px;
@@ -132,7 +132,7 @@ button {
   gap: 6px;
 }
 
-/* ICON BUTTONS */
+/ ICON BUTTONS/
 .taskActions button {
   background: var(--primary-strong);
   padding: 6px;
@@ -190,5 +190,6 @@ button {
   color: var(--text-main);
   font-family: inherit;
 }
+
 
 
